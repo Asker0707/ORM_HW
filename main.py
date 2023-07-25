@@ -37,5 +37,11 @@ for title, name, price, date_sale in query:
     print(f"{title} | {name} | {price} | {date_sale}")
 
 
+#Запрос для поиска магазина, продающего книги по названию 
+title_book = 'Code Complete: Second Edition'
+subq = session.query(Book.id).filter(Book.title == title_book).subquery()
+for q in session.query(Shop).join(Stock).join(subq, Stock.id_book == subq.c.id).all():
+    print(q)    
+
 
 session.close()
